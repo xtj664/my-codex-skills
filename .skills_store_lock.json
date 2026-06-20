@@ -42,6 +42,13 @@
       "source": "community",
       "version": "1.0.0",
       "installedAt": "2026-06-20T10:32:49Z"
+    },
+    "word-docx-cn": {
+      "name": "Word DOCX处理",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=word-docx-cn",
+      "source": "community",
+      "version": "1.0.0",
+      "installedAt": "2026-06-20T11:00:06Z"
     }
   }
 }
