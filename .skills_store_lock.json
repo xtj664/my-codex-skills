@@ -28,6 +28,13 @@
       "source": "community",
       "version": "1.0.2",
       "installedAt": "2026-06-20T09:20:19Z"
+    },
+    "security-sentinel": {
+      "name": "Security Sentinel",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=security-sentinel",
+      "source": "community",
+      "version": "1.0.1",
+      "installedAt": "2026-06-20T09:26:47Z"
     }
   }
 }
