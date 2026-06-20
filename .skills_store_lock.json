@@ -35,6 +35,13 @@
       "source": "community",
       "version": "1.0.1",
       "installedAt": "2026-06-20T09:26:47Z"
+    },
+    "resume-helper": {
+      "name": "简历优化助手",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=resume-helper",
+      "source": "community",
+      "version": "1.0.0",
+      "installedAt": "2026-06-20T10:32:49Z"
     }
   }
 }
