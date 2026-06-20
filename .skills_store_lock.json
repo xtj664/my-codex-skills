@@ -14,6 +14,20 @@
       "source": "community",
       "version": "1.0.0",
       "installedAt": "2026-06-20T09:01:17Z"
+    },
+    "orchestrator-v4": {
+      "name": "orchestrator-v4",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=orchestrator-v4",
+      "source": "community",
+      "version": "2.2.0",
+      "installedAt": "2026-06-20T09:20:14Z"
+    },
+    "excel-xlsx": {
+      "name": "Excel / XLSX",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=excel-xlsx",
+      "source": "community",
+      "version": "1.0.2",
+      "installedAt": "2026-06-20T09:20:19Z"
     }
   }
 }
