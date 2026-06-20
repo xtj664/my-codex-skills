@@ -1,45 +1,43 @@
-﻿---
+---
 name: skill-pipeline-manager
-description: 用户提出需求时，搜索 SkillHub 找到最适合的 Skill，走标准化流水线安装到本地仓库并推送到 Codex
+description: 从 SkillHub 搜索 Skill → 安装到本地仓库 → 推送到 GitHub → 安装到 Codex
 metadata:
-  short-description: SkillHub 搜索 + 标准化安装流水线
+  short-description: SkillHub 搜索 + 全流程安装/删除
 ---
 
 # Skill Pipeline Manager
 
-## 触发条件
+## 触发场景
 
-用户提出类似以下需求时触发此 Skill：
-- "我需要一个能 xxx 的 skill"
-- "有没有可以 xxx 的 skill"
-- "帮我找一个能做 xxx 的 skill"
-- "装一个 xxx 的 skill"
+用户想要管理 Skill 时触发：
+- "帮我搜索 xxx 的 skill"
+- "帮我安装 xxx 的 skill"
+- "帮我卸载/删除 xxx 的 skill"
+- "记录 xxx 的 skill"
 
-## 流水线步骤
+## 安装流程
 
-### 第一步：搜索 SkillHub
+### 第1步：搜索 SkillHub
 
-用 `skillhub search <关键词>` 搜索，关键词根据用户需求提炼（中文/英文/组合）。
+用 `skillhub search <关键词>` 搜索并展示结果（名称/描述/版本）。
 
-### 第二步：推荐最佳匹配
+### 第2步：确认选择
 
-从搜索结果中筛选最对口的 1-3 个 Skill，简要说明各自的适用场景，推荐给用户确认。
+列出 1-3 个候选 Skill，让用户确认后再继续。
 
-### 第三步：安装到本地仓库
-
-用户确认后，对每个 Skill：
+### 第3步：安装到本地仓库
 
 ```powershell
-# 3a. 从 SkillHub 下载到仓库根目录
+# 3a. 从 SkillHub 下载到本地仓库
 & "$env:USERPROFILE\.skillhub\skillhub.cmd" install <slug> --dir D:\Skills\my-codex-skills
 
-# 3b. 移入 skills/ 目录并更新 .index
-Move-Item <slug> skills/<slug> -Force
-New-Item -ItemType Directory -Path "skills\.index\<slug>" -Force
-New-Item -ItemType File -Path "skills\.index\<slug>\.gitkeep" -Force
+# 3b. 移动到 skills/ 目录并创建 .index
+Move-Item D:\Skills\my-codex-skills\<slug> D:\Skills\my-codex-skills\skills\<slug> -Force
+New-Item -ItemType Directory -Path "D:\Skills\my-codex-skills\skills\.index\<slug>" -Force
+New-Item -ItemType File -Path "D:\Skills\my-codex-skills\skills\.index\<slug>\.gitkeep" -Force
 ```
 
-### 第四步：提交并推送到 GitHub
+### 第4步：推送到 GitHub
 
 ```powershell
 cd D:\Skills\my-codex-skills
@@ -48,21 +46,44 @@ git commit -m "add: <slug> skill"
 git push
 ```
 
-### 第五步：从自己仓库安装到 Codex
+### 第5步：从 GitHub 安装到 Codex
 
 ```powershell
 python "$env:USERPROFILE\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo xtj664/my-codex-skills --path skills/<slug>
 ```
 
-### 第六步：收尾
+## 删除流程
 
-- 告知用户安装完成，需要重启 Codex 生效
-- 汇总当前仓库 Skill 列表
-- 询问是否还有其它需求
+当用户要求卸载/删除某个 Skill 时，必须三步同步删除。
 
-## 基础设施信息
+### 第1步：从 Codex 删除
 
-- 本地仓库路径: `D:\Skills\my-codex-skills`
-- GitHub 仓库: `xtj664/my-codex-skills`
-- SkillHub CLI: `$env:USERPROFILE\.skillhub\skillhub.cmd`
-- Codex Skill 安装器: `$env:USERPROFILE\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py`
+```powershell
+Remove-Item -Path "$env:USERPROFILE\.codex\skills\<slug>" -Recurse -Force
+```
+
+### 第2步：从本地仓库删除并推送 GitHub
+
+```powershell
+cd D:\Skills\my-codex-skills
+Remove-Item -Path "skills\<slug>" -Recurse -Force
+Remove-Item -Path "skills\.index\<slug>" -Recurse -Force
+git add -A
+git commit -m "remove: <slug> skill"
+git push
+```
+
+### 第3步：验证
+
+确认以下位置均已删除：
+- Codex：C:\Users\谢泰俊\.codex\skills\<slug>
+- 本地仓库：D:\Skills\my-codex-skills\skills\<slug> 和 skills\.index\<slug>
+- 远程仓库：已通过 git push 同步删除
+
+## 目录与路径
+
+- 本地仓库：D:\Skills\my-codex-skills
+- GitHub 仓库：xtj664/my-codex-skills
+- SkillHub CLI：$env:USERPROFILE\.skillhub\skillhub.cmd
+- Codex Skill 安装脚本：$env:USERPROFILE\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py
+- Codex 技能目录：$env:USERPROFILE\.codex\skills
