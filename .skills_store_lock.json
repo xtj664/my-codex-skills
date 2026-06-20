@@ -7,6 +7,13 @@
       "source": "community",
       "version": "3.0.23",
       "installedAt": "2026-06-20T08:54:23Z"
+    },
+    "agent-browser": {
+      "name": "Agent Browser",
+      "zip_url": "https://api.skillhub.cn/api/v1/download?slug=agent-browser",
+      "source": "community",
+      "version": "1.0.0",
+      "installedAt": "2026-06-20T09:01:17Z"
     }
   }
 }
